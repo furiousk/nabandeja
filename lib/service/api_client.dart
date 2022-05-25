@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/auth.dart';
+import '../model/company.dart';
 import '../model/token.dart';
 
 class ApiClient {
@@ -26,7 +27,27 @@ class ApiClient {
       prefs.setString("token", data.newPasswordToken.toString());
       return data;
     } else {
-      throw Exception('Failed to create post');
+      throw Exception('Failed logon');
+    }
+  }
+
+  Future<List<Company>> listCompany() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final url =
+        Uri.parse("${ApiClient.baseUrl}company/getsimplifiedcompanylist");
+    final request = http.Request('GET', url);
+    request.headers['Content-Type'] = 'application/json';
+    request.headers['Authorization'] = "Bearer ${prefs.getString("token")}";
+
+    final streamedResponse = await _inner.send(request);
+    final response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      List<Company> data = List<Company>.from(
+          jsonDecode(response.body).map((x) => Company.fromJson(x)));
+      return data;
+    } else {
+      throw Exception('Failed get company');
     }
   }
 }

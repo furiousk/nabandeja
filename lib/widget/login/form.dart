@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../company/index.dart';
 import 'methods.dart';
-import '../home/index.dart';
 
 class ContentStatefulWidget extends StatefulWidget {
   const ContentStatefulWidget({Key? key}) : super(key: key);
@@ -70,7 +70,7 @@ class _ContentStatefulWidgetState extends State<ContentStatefulWidget> {
                       if (!mounted) return;
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const Home()),
+                        MaterialPageRoute(builder: (context) => CompanyApp()),
                       );
                     }
                   },
