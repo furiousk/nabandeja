@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nabandeja/model/company.dart';
-import 'package:nabandeja/widget/order/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../model/company.dart';
 import '../../service/api_client.dart';
+import '../order/index.dart';
 
 class Methods {
   final ApiClient _api = ApiClient();
@@ -13,12 +13,21 @@ class Methods {
     return data;
   }
 
-  Future<void> goHome(id, context) async {
+  Future<void> goHome(Company company, context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    var id = company.id ?? "";
+    var name = company.companyFantasyName ?? "";
+
     prefs.setString('company', id);
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Order()),
-    );
+    prefs.setString('companyName', name);
+
+    var companyAuth = await _api.authCompany(id);
+
+    if (companyAuth.authenticated == true) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const OrderApp()),
+      );
+    }
   }
 }

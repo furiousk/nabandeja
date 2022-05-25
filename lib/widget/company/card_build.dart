@@ -21,7 +21,7 @@ class CardWidget extends StatelessWidget {
               },
             );
           } else {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }
         });
   }
@@ -61,7 +61,7 @@ Card buildCard(Company company, BuildContext context) {
               TextButton(
                 child: const Text('Selecione'),
                 onPressed: () {
-                  methods.goHome(id, context);
+                  methods.goHome(company, context);
                 },
               ),
             ],
