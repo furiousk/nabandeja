@@ -8,7 +8,7 @@ class CompanyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Home'),
+          title: const Text('Estabelecimentos'),
         ),
         body: Container(
           padding: const EdgeInsets.all(16.0),
