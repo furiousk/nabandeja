@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nabandeja/assets/themes/app_colors.dart';
 import './card_build.dart';
 
 class CompanyApp extends StatelessWidget {
@@ -8,6 +9,7 @@ class CompanyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: AppColors.primary,
           title: const Text('Estabelecimentos'),
         ),
         body: Container(

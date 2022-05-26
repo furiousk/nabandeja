@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nabandeja/assets/themes/app_colors.dart';
 import 'card_build.dart';
 import 'text_company_name.dart';
 
@@ -54,11 +55,12 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
+    return DefaultTabController(
         length: 4,
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: AppColors.primary,
+            shape: const Border(bottom: BorderSide(color: AppColors.secondary)),
             bottom: const TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.receipt), text: 'Fila'),
@@ -156,6 +158,7 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
               ),
               FloatingActionButton(
                 onPressed: _toggle,
+                backgroundColor: AppColors.secondary,
                 child: AnimatedIcon(
                   icon: AnimatedIcons.menu_close,
                   progress: _buttonAnimatedIcon,
@@ -184,7 +187,6 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
-      ),
     );
   }
 }
