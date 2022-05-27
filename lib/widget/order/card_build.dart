@@ -20,6 +20,7 @@ class CardWidget extends StatelessWidget {
             AsyncSnapshot<List<KdsSalesOrder>> snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
+              controller: ScrollController(),
               itemCount: snapshot.data?.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {

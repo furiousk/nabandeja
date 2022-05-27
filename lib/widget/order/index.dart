@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nabandeja/assets/themes/app_colors.dart';
 import 'card_build.dart';
 import 'text_company_name.dart';
+import './transform_btn.dart';
 
 class OrderApp extends StatefulWidget {
   const OrderApp({Key? key}) : super(key: key);
@@ -15,14 +16,18 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
   late Animation<double> _buttonAnimatedIcon;
   late Animation<double> _translateButton;
 
+  final GlobalKey<_Order> _key = GlobalKey();
+
   bool _isExpanded = false;
+  String _filter = "00000000-0000-0000-0000-000000000000";
 
   @override
   initState() {
     _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 600))
-      ..addListener(() {
-        setState(() {});
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    )..addListener(() {
+        _update();
       });
 
     _buttonAnimatedIcon =
@@ -35,6 +40,7 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
       parent: _animationController,
       curve: Curves.easeInOut,
     ));
+
     super.initState();
   }
 
@@ -44,7 +50,7 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  _toggle() {
+  void _toggle() {
     if (_isExpanded) {
       _animationController.reverse();
     } else {
@@ -53,140 +59,130 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
     _isExpanded = !_isExpanded;
   }
 
+  void _update() {
+    setState(() {
+      _translateButton.value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: AppColors.primary,
-            shape: const Border(bottom: BorderSide(color: AppColors.secondary)),
-            bottom: const TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.receipt), text: 'Fila'),
-                Tab(icon: Icon(Icons.access_alarms), text: 'Preparo'),
-                Tab(icon: Icon(Icons.restaurant), text: 'Pronto'),
-                Tab(icon: Icon(Icons.room_service), text: 'Retirado'),
-              ],
-            ),
-            title: TextCompanyNameWidget(context),
-          ),
-          floatingActionButton: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Transform(
-                transform: Matrix4.translationValues(
-                  0.0,
-                  _translateButton.value * 7,
-                  0.0,
-                ),
-                child: FloatingActionButton(
-                  backgroundColor: const Color.fromARGB(255, 73, 73, 73),
-                  onPressed: () {/* Do something */},
-                  child: const Icon(
-                    Icons.all_inclusive,
-                  ),
-                ),
-              ),
-              Transform(
-                transform: Matrix4.translationValues(
-                  0.0,
-                  _translateButton.value * 6,
-                  0.0,
-                ),
-                child: FloatingActionButton(
-                  backgroundColor: const Color.fromARGB(255, 112, 6, 145),
-                  onPressed: () {/* Do something */},
-                  child: const Icon(
-                    Icons.wine_bar,
-                  ),
-                ),
-              ),
-              Transform(
-                transform: Matrix4.translationValues(
-                  0.0,
-                  _translateButton.value * 5,
-                  0.0,
-                ),
-                child: FloatingActionButton(
-                  backgroundColor: const Color.fromARGB(255, 212, 12, 243),
-                  onPressed: () {/* Do something */},
-                  child: const Icon(
-                    Icons.icecream,
-                  ),
-                ),
-              ),
-              Transform(
-                transform: Matrix4.translationValues(
-                  0.0,
-                  _translateButton.value * 4,
-                  0.0,
-                ),
-                child: FloatingActionButton(
-                  backgroundColor: const Color.fromARGB(255, 234, 20, 17),
-                  onPressed: () {/* Do something */},
-                  child: const Icon(
-                    Icons.dinner_dining,
-                  ),
-                ),
-              ),
-              Transform(
-                transform: Matrix4.translationValues(
-                  0,
-                  _translateButton.value * 3,
-                  0,
-                ),
-                child: FloatingActionButton(
-                  backgroundColor: const Color.fromARGB(255, 222, 92, 11),
-                  onPressed: () {/* Do something */},
-                  child: const Icon(
-                    Icons.kebab_dining,
-                  ),
-                ),
-              ),
-              Transform(
-                transform: Matrix4.translationValues(
-                  0,
-                  _translateButton.value * 2,
-                  0,
-                ),
-                child: FloatingActionButton(
-                  backgroundColor: Colors.amber,
-                  onPressed: () {/* Do something */},
-                  child: const Icon(Icons.local_bar),
-                ),
-              ),
-              FloatingActionButton(
-                onPressed: _toggle,
-                backgroundColor: AppColors.secondary,
-                child: AnimatedIcon(
-                  icon: AnimatedIcons.menu_close,
-                  progress: _buttonAnimatedIcon,
-                ),
-              ),
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.primary,
+          shape: const Border(bottom: BorderSide(color: AppColors.secondary)),
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.receipt), text: 'Fila'),
+              Tab(icon: Icon(Icons.access_alarms), text: 'Preparo'),
+              Tab(icon: Icon(Icons.restaurant), text: 'Pronto'),
+              //Tab(icon: Icon(Icons.room_service), text: 'Retirado'),
             ],
           ),
-          body: TabBarView(
-            children: <Widget>[
-              CardWidget(
-                context,
-                status: 0,
-                filter: "00000000-0000-0000-0000-000000000000",
-              ),
-              CardWidget(
-                context,
-                status: 1,
-                filter: "00000000-0000-0000-0000-000000000000",
-              ),
-              CardWidget(
-                context,
-                status: 2,
-                filter: "00000000-0000-0000-0000-000000000000",
-              ),
-              const Icon(Icons.room_service),
-            ],
-          ),
+          title: TextCompanyNameWidget(context),
         ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TransformBtnWidget(
+              context,
+              translateButton: (_translateButton.value * 7),
+              colorBtn: const Color.fromARGB(255, 73, 73, 73),
+              iconBtn: const Icon(Icons.all_inclusive),
+              callback: () {
+                setState(() {
+                  _filter = "00000000-0000-0000-0000-000000000000";
+                });
+              },
+            ),
+            TransformBtnWidget(
+              context,
+              translateButton: (_translateButton.value * 6),
+              colorBtn: const Color.fromARGB(255, 112, 6, 145),
+              iconBtn: const Icon(Icons.wine_bar),
+              callback: () {
+                setState(() {
+                  _filter = "d03114e6-c563-41a8-8442-ac8b87b3c077";
+                });
+              },
+            ),
+            TransformBtnWidget(
+              context,
+              translateButton: (_translateButton.value * 5),
+              colorBtn: const Color.fromARGB(255, 212, 12, 243),
+              iconBtn: const Icon(Icons.icecream),
+              callback: () {
+                setState(() {
+                  _filter = "61efef19-004f-4703-a3c6-dd35645903ca";
+                });
+              },
+            ),
+            TransformBtnWidget(
+              context,
+              translateButton: (_translateButton.value * 4),
+              colorBtn: const Color.fromARGB(255, 234, 20, 17),
+              iconBtn: const Icon(Icons.dinner_dining),
+              callback: () {
+                setState(() {
+                  _filter = "db121a53-ccfe-4143-bacc-7254ae096022";
+                });
+              },
+            ),
+            TransformBtnWidget(
+              context,
+              translateButton: (_translateButton.value * 3),
+              colorBtn: const Color.fromARGB(255, 222, 92, 11),
+              iconBtn: const Icon(Icons.kebab_dining),
+              callback: () {
+                setState(() {
+                  _filter = "7588d16b-4606-4cfc-ace5-e17d0f3008de";
+                });
+              },
+            ),
+            TransformBtnWidget(
+              context,
+              translateButton: (_translateButton.value * 2),
+              colorBtn: Colors.amber,
+              iconBtn: const Icon(Icons.local_bar),
+              callback: () {
+                setState(() {
+                  _filter = "7aa28158-9d7a-42e7-93f0-deabc9392574";
+                });
+              },
+            ),
+            FloatingActionButton(
+              onPressed: _toggle,
+              backgroundColor: AppColors.secondary,
+              child: AnimatedIcon(
+                icon: AnimatedIcons.menu_close,
+                progress: _buttonAnimatedIcon,
+              ),
+            ),
+          ],
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            CardWidget(
+              context,
+              status: 0,
+              filter: _filter,
+            ),
+            CardWidget(
+              context,
+              status: 1,
+              filter: _filter,
+            ),
+            CardWidget(
+              context,
+              status: 2,
+              filter: _filter,
+            ),
+            //const Icon(Icons.room_service),
+          ],
+        ),
+      ),
     );
   }
 }
