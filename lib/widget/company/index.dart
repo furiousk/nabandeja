@@ -13,7 +13,7 @@ class CompanyApp extends StatelessWidget {
           title: const Text('Estabelecimentos'),
         ),
         body: Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
           child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(

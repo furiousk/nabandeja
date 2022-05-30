@@ -21,6 +21,15 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
   String _filter = "00000000-0000-0000-0000-000000000000";
 
+  Map<String, dynamic> filterName = {
+    '00000000-0000-0000-0000-000000000000': 'Todos',
+    'd03114e6-c563-41a8-8442-ac8b87b3c077': 'Bebidas',
+    '61efef19-004f-4703-a3c6-dd35645903ca': 'Sobremesas',
+    'db121a53-ccfe-4143-bacc-7254ae096022': 'Pratos',
+    '7588d16b-4606-4cfc-ace5-e17d0f3008de': 'Petiscos',
+    '7aa28158-9d7a-42e7-93f0-deabc9392574': 'Vinhos',
+  };
+
   @override
   initState() {
     _animationController = AnimationController(
@@ -155,31 +164,45 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
             FloatingActionButton(
               onPressed: _toggle,
               backgroundColor: AppColors.secondary,
-              child: AnimatedIcon(
-                icon: AnimatedIcons.menu_close,
-                progress: _buttonAnimatedIcon,
-              ),
+              child: const Icon(Icons.filter_alt_rounded),
             ),
           ],
         ),
-        body: TabBarView(
+        body: Stack(
+          alignment: AlignmentDirectional.topStart,
           children: <Widget>[
-            CardWidget(
-              context,
-              status: 0,
-              filter: _filter,
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                filterName[_filter],
+                style: TextStyle(
+                  color: AppColors.secondary,
+                ),
+              ),
             ),
-            CardWidget(
-              context,
-              status: 1,
-              filter: _filter,
+            Container(
+              margin: const EdgeInsets.only(top: 42, bottom: 10),
+              child: TabBarView(
+                children: <Widget>[
+                  CardWidget(
+                    context,
+                    status: 0,
+                    filter: _filter,
+                  ),
+                  CardWidget(
+                    context,
+                    status: 1,
+                    filter: _filter,
+                  ),
+                  CardWidget(
+                    context,
+                    status: 2,
+                    filter: _filter,
+                  ),
+              //const Icon(Icons.room_service),
+                ],
+              ),
             ),
-            CardWidget(
-              context,
-              status: 2,
-              filter: _filter,
-            ),
-            //const Icon(Icons.room_service),
           ],
         ),
       ),

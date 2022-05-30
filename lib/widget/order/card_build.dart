@@ -34,7 +34,7 @@ class CardWidget extends StatelessWidget {
   }
 }
 
-Card buildCard(KdsSalesOrder order, BuildContext context) {
+GestureDetector buildCard(KdsSalesOrder order, BuildContext context) {
   var deliveryPlaceName = order.deliveryPlaceName ?? "";
   var accountName = order.accountName ?? "";
   var itemDescription = order.entries![0].itemDescription ?? "";
@@ -42,8 +42,11 @@ Card buildCard(KdsSalesOrder order, BuildContext context) {
   var note = order.entries![0].note ?? "";
   var launchCode = order.launchCode ?? "";
 
-  return Card(
+  return GestureDetector(
+    onTap: () {},
+    child: Card(
       elevation: 4.0,
+      margin: const EdgeInsets.fromLTRB(20, 10 ,20, 10),
       child: Column(
         children: [
           ListTile(
@@ -54,14 +57,8 @@ Card buildCard(KdsSalesOrder order, BuildContext context) {
             title: Text("${entryQuantity}x $itemDescription"),
             subtitle: Text(note),
           ),
-          ButtonBar(
-            children: [
-              TextButton(
-                child: Text(launchCode),
-                onPressed: () {},
-              ),
-            ],
-          )
         ],
-      ));
+      ),
+    ),
+  );
 }
