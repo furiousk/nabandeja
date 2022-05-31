@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:nabandeja/assets/themes/app_colors.dart';
 import 'package:nabandeja/assets/themes/app_images.dart';
@@ -34,7 +32,6 @@ class CardWidget extends StatelessWidget {
 
 Container buildCard(Company company, BuildContext context) {
   final Methods methods = Methods();
-  print(json.encode(company));
   var heading = company.companyFantasyName ?? "";
   var subheading = company.companyName ?? "";
   var logo = company.logo ?? "";
@@ -48,9 +45,10 @@ Container buildCard(Company company, BuildContext context) {
   var status = company.companyStatus ?? 1;
   var id = company.id;
   IconData icon = status == 0 ? Icons.done : Icons.close;
+  final size = MediaQuery.of(context).size;
 
   return Container(
-    height: 210.0,
+    height: 212.0,
     margin: EdgeInsets.all(10.0),
     child: GestureDetector(
       onTap: () {

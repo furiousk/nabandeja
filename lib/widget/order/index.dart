@@ -23,11 +23,11 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
 
   Map<String, dynamic> filterName = {
     '00000000-0000-0000-0000-000000000000': 'Todos',
-    'd03114e6-c563-41a8-8442-ac8b87b3c077': 'Bebidas',
+    'd03114e6-c563-41a8-8442-ac8b87b3c077': 'Vinhos',
     '61efef19-004f-4703-a3c6-dd35645903ca': 'Sobremesas',
-    'db121a53-ccfe-4143-bacc-7254ae096022': 'Pratos',
-    '7588d16b-4606-4cfc-ace5-e17d0f3008de': 'Petiscos',
-    '7aa28158-9d7a-42e7-93f0-deabc9392574': 'Vinhos',
+    'db121a53-ccfe-4143-bacc-7254ae096022': 'Prato Principal',
+    '7588d16b-4606-4cfc-ace5-e17d0f3008de': 'Entrada',
+    '7aa28158-9d7a-42e7-93f0-deabc9392574': 'Bebidas',
   };
 
   @override
@@ -143,7 +143,7 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
               context,
               translateButton: (_translateButton.value * 3),
               colorBtn: const Color.fromARGB(255, 222, 92, 11),
-              iconBtn: const Icon(Icons.kebab_dining),
+              iconBtn: const Icon(Icons.lunch_dining),
               callback: () {
                 setState(() {
                   _filter = "7588d16b-4606-4cfc-ace5-e17d0f3008de";
@@ -154,7 +154,7 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
               context,
               translateButton: (_translateButton.value * 2),
               colorBtn: Colors.amber,
-              iconBtn: const Icon(Icons.local_bar),
+              iconBtn: const Icon(Icons.local_drink),
               callback: () {
                 setState(() {
                   _filter = "7aa28158-9d7a-42e7-93f0-deabc9392574";
@@ -164,7 +164,7 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
             FloatingActionButton(
               onPressed: _toggle,
               backgroundColor: AppColors.secondary,
-              child: const Icon(Icons.filter_alt_rounded),
+              child: !_isExpanded ? Icon(Icons.filter_alt_rounded) : Icon(Icons.close),
             ),
           ],
         ),
