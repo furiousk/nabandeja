@@ -22,6 +22,27 @@ class CardWidget extends StatelessWidget {
         builder: (BuildContext context,
             AsyncSnapshot<List<KdsSalesOrder>> snapshot) {
           if (snapshot.hasData) {
+            if (snapshot.data?.length == 0) {
+              return Center(
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: const <Widget> [
+                    Icon(
+                      Icons.no_food_outlined,
+                      size: 32,
+                      color: Colors.grey,
+                    ),
+                    Text(
+                      '\n\n\n\nNenhum pedido na fila!',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                )
+              );
+            }
             return ListView.builder(
               controller: ScrollController(),
               itemCount: snapshot.data?.length,
@@ -38,7 +59,12 @@ class CardWidget extends StatelessWidget {
 }
 
 GestureDetector buildCard(KdsSalesOrder order, BuildContext context) {
+
   final salesOrderDate = order.salesOrderDate ?? '';
+  final timeElapsed = DateTime.now().difference(DateTime.parse(salesOrderDate));
+  final timeTrackingNormal = order.timeTrackingNormal ?? '';
+  final timeTrackingWarning = order.timeTrackingWarning ?? '';
+  final timeTrackingDanger = order.timeTrackingDanger ?? '';
   final deliveryPlaceName = order.deliveryPlaceName ?? '';
   final accountName = order.accountName ?? '';
   final item = order.entries!.map((entrie) {
@@ -50,7 +76,21 @@ GestureDetector buildCard(KdsSalesOrder order, BuildContext context) {
   });
   final launchCode = order.launchCode ?? '';
 
-  print(json.encode(order));
+  int getMinute(String time) {
+    return int.tryParse(time.split(':')[1]) ?? 0;
+  }
+
+  Color colorStatus(Duration orderTime) {
+    if (orderTime.inMinutes >= getMinute(timeTrackingWarning)) {
+      return Colors.red;
+    } else if (orderTime.inMinutes >= getMinute(timeTrackingNormal)) {
+      return Colors.amber;
+    } else {
+      return Colors.lightGreen;
+    }
+  }
+
+  print(order.toJson());
   
   return GestureDetector(
     onTap: () {},
@@ -61,23 +101,23 @@ GestureDetector buildCard(KdsSalesOrder order, BuildContext context) {
         children: [
           Container(
             height: 30,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(4),
               topRight: Radius.circular(4),
               ),
-              color: Colors.red,
+              color: colorStatus(timeElapsed),
             ),
             child: Row(
               children: [
                 const Padding(
                   padding: EdgeInsets.only(left: 16.0),
-                  child: Icon(Icons.access_alarm, color: Colors.white,),
+                  child: Icon(Icons.access_alarm, color: Colors.white, size: 16,),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    '$salesOrderDate min',
+                    '${timeElapsed.inMinutes} min',
                     style: const TextStyle(color: Colors.white,),
                   ),
                 ),
@@ -85,17 +125,23 @@ GestureDetector buildCard(KdsSalesOrder order, BuildContext context) {
             ),
           ),
           Container(
-            color: Colors.grey[100],
+            color: AppColors.lightGrey,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
               child: ListTile(
-                title: Text(deliveryPlaceName),
+                title: Text(
+                  deliveryPlaceName,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    color: AppColors.primary,
+                  ),
+                ),
                 subtitle: Text(accountName),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(24.0),
             child: Text(
               item.join('\n'),
               style: const TextStyle(
@@ -104,13 +150,24 @@ GestureDetector buildCard(KdsSalesOrder order, BuildContext context) {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only( bottom: 8.0),
-            child: Text(
-              launchCode,
-              style: const TextStyle(
-                color: AppColors.secondary,
-                fontSize: 16,
+          Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(4),
+              bottomRight: Radius.circular(4),
+              ),
+              color: AppColors.lightGrey,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                launchCode,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.secondary,
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
