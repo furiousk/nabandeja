@@ -168,11 +168,12 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
           alignment: AlignmentDirectional.topStart,
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(left: 20, top: 12),
               child: Text(
-                filterName[_filter],
+                'Exibindo - ${filterName[_filter]}',
                 style: const TextStyle(
                   color: AppColors.secondary,
+                  fontSize: 16,
                 ),
               ),
             ),
