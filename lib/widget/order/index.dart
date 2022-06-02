@@ -13,10 +13,7 @@ class OrderApp extends StatefulWidget {
 
 class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  late Animation<double> _buttonAnimatedIcon;
   late Animation<double> _translateButton;
-
-  final GlobalKey<_Order> _key = GlobalKey();
 
   bool _isExpanded = false;
   String _filter = "00000000-0000-0000-0000-000000000000";
@@ -38,9 +35,6 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
     )..addListener(() {
         _update();
       });
-
-    _buttonAnimatedIcon =
-        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
 
     _translateButton = Tween<double>(
       begin: 100,
@@ -164,7 +158,9 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
             FloatingActionButton(
               onPressed: _toggle,
               backgroundColor: AppColors.secondary,
-              child: !_isExpanded ? Icon(Icons.filter_alt_rounded) : Icon(Icons.close),
+              child: !_isExpanded
+                  ? const Icon(Icons.filter_alt_rounded)
+                  : const Icon(Icons.close),
             ),
           ],
         ),
@@ -175,7 +171,7 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
               padding: const EdgeInsets.all(20),
               child: Text(
                 filterName[_filter],
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.secondary,
                 ),
               ),
@@ -199,7 +195,7 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
                     status: 2,
                     filter: _filter,
                   ),
-              //const Icon(Icons.room_service),
+                  //const Icon(Icons.room_service),
                 ],
               ),
             ),

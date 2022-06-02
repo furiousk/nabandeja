@@ -34,22 +34,10 @@ Container buildCard(Company company, BuildContext context) {
   final Methods methods = Methods();
   var heading = company.companyFantasyName ?? "";
   var subheading = company.companyName ?? "";
-  var logo = company.logo ?? "";
-  var cardImage = logo.isEmpty
-      ? Text(Util.createInitials(heading),
-          style: const TextStyle(
-            color: Color.fromARGB(255, 70, 70, 70),
-            fontSize: 45,
-          ))
-      : Ink.image(image: NetworkImage(logo), fit: BoxFit.cover);
-  var status = company.companyStatus ?? 1;
-  var id = company.id;
-  IconData icon = status == 0 ? Icons.done : Icons.close;
-  final size = MediaQuery.of(context).size;
 
   return Container(
     height: 212.0,
-    margin: EdgeInsets.all(10.0),
+    margin: const EdgeInsets.all(10.0),
     child: GestureDetector(
       onTap: () {
         methods.goHome(company, context);
@@ -80,8 +68,13 @@ Container buildCard(Company company, BuildContext context) {
                   ),
                   padding: const EdgeInsets.all(2),
                   child: Container(
-                    margin: EdgeInsets.all(10.0),
+                    margin: const EdgeInsets.all(10.0),
                     transform: Matrix4.translationValues(0.0, 30.0, 0.0),
+                    alignment: const FractionalOffset(0.0, 0.0),
+                    decoration: const BoxDecoration(
+                      color: AppColors.lightGrey,
+                      shape: BoxShape.circle,
+                    ),
                     child: Center(
                       child: Text(
                         Util.createInitials(heading),
@@ -91,11 +84,6 @@ Container buildCard(Company company, BuildContext context) {
                         ),
                       ),
                     ),
-                    alignment: const FractionalOffset(0.0, 0.0),
-                    decoration: const BoxDecoration(
-                      color: AppColors.lightGrey,
-                      shape: BoxShape.circle,
-                    ),
                   ),
                 ),
               ],
@@ -104,37 +92,37 @@ Container buildCard(Company company, BuildContext context) {
               padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               alignment: Alignment.center,
               child: Stack(
-                alignment: AlignmentDirectional.center,
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Text(
-                      heading,
-                      style: const TextStyle(
-                        color: AppColors.primary,
-                        fontSize: 16,
+                  alignment: AlignmentDirectional.center,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Text(
+                        heading,
+                        style: const TextStyle(
+                          color: AppColors.primary,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    child: Text(
-                      subheading,
-                      style: const TextStyle(
-                        color: AppColors.grey,
+                    Container(
+                      margin: const EdgeInsets.only(top: 30),
+                      child: Text(
+                        subheading,
+                        style: const TextStyle(
+                          color: AppColors.grey,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 76),
-                    child: const Text(
-                      'Ativo',
-                      style: TextStyle(
-                        color: Colors.green,
+                    Container(
+                      margin: const EdgeInsets.only(top: 76),
+                      child: const Text(
+                        'Ativo',
+                        style: TextStyle(
+                          color: Colors.green,
+                        ),
                       ),
                     ),
-                  ),
-                ]),
+                  ]),
               // ListTile(
               //   title: Text(heading),
               //   subtitle: Text(subheading),

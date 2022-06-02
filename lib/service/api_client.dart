@@ -11,7 +11,7 @@ import '../model/token.dart';
 
 class ApiClient {
   static const baseUrl = "https://stg.thexpos.net/ordercontrol/";
-  static const socketUrl = "${ApiClient.baseUrl}signalrserver/poskds";
+
   final http.Client _inner = http.Client();
 
   Future<Token> login(Auth userLogin) async {

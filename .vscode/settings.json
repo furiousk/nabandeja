@@ -3,6 +3,7 @@
     "editor.autoIndent": "advanced",
     "editor.wrappingIndent": "deepIndent",
     "cSpell.words": [
+        "signalr",
         "widgetbuilder"
     ]
 }
