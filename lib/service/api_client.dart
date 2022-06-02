@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:nabandeja/model/kds_order.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/auth.dart';
@@ -113,6 +114,23 @@ class ApiClient {
       return data;
     } else {
       throw Exception('Failed get KdsSalesOrder');
+    }
+  }
+
+  Future updateOrderStatus(KdsOrder kdsOrder) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final url = Uri.parse("${ApiClient.baseUrl}kitchen/updateordersstatus");
+    final request = http.Request('PUT', url);
+    request.headers['Content-Type'] = 'application/json';
+    request.headers['Authorization'] = "Bearer ${prefs.getString("tokenCompany")}";
+    request.body = jsonEncode(kdsOrder.toJson());
+    final streamedResponse = await _inner.send(request);
+    final response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 201) {
+
+    } else {
+      throw Exception('Failed update Status');
     }
   }
 }
