@@ -3,6 +3,7 @@ import 'package:logging/logging.dart';
 import 'package:nabandeja/service/util.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
+import '../model/custom_notification.dart';
 import '../model/socket_msg.dart';
 import 'notification_service.dart';
 
@@ -56,6 +57,14 @@ class IoSocket {
       try {
         SocketMsg message = Util.convertObjectTo(arguments);
         callback(message);
+        _notificationService.showLocalNotification(
+          CustomNotification(
+            id: 10,
+            title: "Está na mesa pessoal...",
+            body: "",
+            payload: "",
+          ),
+        );
         print(message.kdsMessageType);
       } catch (error) {
         print(error);
