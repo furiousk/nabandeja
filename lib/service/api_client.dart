@@ -126,10 +126,8 @@ class ApiClient {
     request.body = jsonEncode(kdsOrder.toJson());
     final streamedResponse = await _inner.send(request);
     final response = await http.Response.fromStream(streamedResponse);
-
-    if (response.statusCode == 201) {
-
-    } else {
+    
+    if (response.statusCode != 200) {
       throw Exception('Failed update Status');
     }
   }

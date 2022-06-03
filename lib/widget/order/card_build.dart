@@ -65,7 +65,7 @@ class CardWidget extends StatelessWidget {
   }
 }
 
-GestureDetector buildCard(KdsSalesOrder order, BuildContext context, int status, Methods _methods) {
+Card buildCard(KdsSalesOrder order, BuildContext context, int status, Methods _methods) {
 
   final accountId = order.accountId ?? '';
   final kdsSalesOrderId = order.kdsSalesOrderId ?? '';
@@ -99,136 +99,137 @@ GestureDetector buildCard(KdsSalesOrder order, BuildContext context, int status,
     }
   }
 
-  return GestureDetector(
-    onTap: () {},
-    child: Card(
-      elevation: 4.0,
-      margin: const EdgeInsets.fromLTRB(20, 10 ,20, 10),
-      child: Column(
-        children: [
-          Container(
-            height: 30,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(4),
-              topRight: Radius.circular(4),
-              ),
-              color: colorStatus(timeElapsed),
+  return Card(
+    elevation: 4.0,
+    margin: const EdgeInsets.fromLTRB(20, 10 ,20, 10),
+    child: Column(
+      children: [
+        Container(
+          height: 30,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(4),
+            topRight: Radius.circular(4),
             ),
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 16.0),
-                  child: Icon(Icons.access_alarm, color: Colors.white, size: 16,),
+            color: colorStatus(timeElapsed),
+          ),
+          child: Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0),
+                child: Icon(Icons.access_alarm, color: Colors.white, size: 16,),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text(
+                  '${timeElapsed.inMinutes} min',
+                  style: const TextStyle(color: Colors.white,),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    '${timeElapsed.inMinutes} min',
-                    style: const TextStyle(color: Colors.white,),
-                  ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          color: AppColors.lightGrey,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+            child: ListTile(
+              title: Text(
+                deliveryPlaceName,
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: AppColors.primary,
                 ),
-              ],
+              ),
+              subtitle: Text(accountName),
             ),
           ),
-          Container(
+        ),
+        Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Text(
+            item.join('\n'),
+            style: const TextStyle(
+              color: AppColors.primary,
+              height: 1.8,
+            ),
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(4),
+            bottomRight: Radius.circular(4),
+            ),
             color: AppColors.lightGrey,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
-              child: ListTile(
-                title: Text(
-                  deliveryPlaceName,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: AppColors.primary,
-                  ),
-                ),
-                subtitle: Text(accountName),
-              ),
-            ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Text(
-              item.join('\n'),
-              style: const TextStyle(
-                color: AppColors.primary,
-                height: 1.8,
-              ),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(4),
-              bottomRight: Radius.circular(4),
-              ),
-              color: AppColors.lightGrey,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 70,
-                  padding: const EdgeInsets.all(8.0),
-                  child: status != KdsOrderStatus.Queued ? 
-                    ElevatedButton(
-                      onPressed: () async {
-                        await _methods.updateOrderStatus(
-                          KdsOrder(
-                            id: kdsSalesOrderId, 
-                            accountId: accountId, 
-                            isSalesOrder: true, 
-                            status: status - 1,
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: AppColors.secondary,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back_rounded,
-                        color: Colors.white,
-                      ),
-                    ) : 
-                    const Text(''),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    launchCode,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: AppColors.secondary,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 70,
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 70,
+                padding: const EdgeInsets.all(8.0),
+                child: status != KdsOrderStatus.Queued ? 
+                  ElevatedButton(
                     onPressed: () async {
                       await _methods.updateOrderStatus(
-                          KdsOrder(
-                            id: kdsSalesOrderId, 
-                            accountId: accountId, 
-                            isSalesOrder: true, 
-                            status: status + 1,
-                          ),
-                        );
+                        KdsOrder(
+                          id: kdsSalesOrderId, 
+                          accountId: accountId, 
+                          isSalesOrder: true, 
+                          status: status - 1,
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: AppColors.secondary,
+                      primary: AppColors.lightGrey,
                     ),
-                    child: const Icon(Icons.arrow_forward_rounded),
-                )),
-              ],
-            ),
+                    child: const Icon(
+                      Icons.arrow_back_rounded,
+                      color: AppColors.secondary,
+                    ),
+                  ) : 
+                  const Text(''),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  launchCode,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: AppColors.secondary,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              Container(
+                width: 70,
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await _methods.updateOrderStatus(
+                        KdsOrder(
+                          id: kdsSalesOrderId, 
+                          accountId: accountId, 
+                          isSalesOrder: true, 
+                          status: status + 1,
+                        ),
+                      );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: AppColors.lightGrey,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_forward_rounded,
+                    color: AppColors.secondary,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     ),
   );
 }

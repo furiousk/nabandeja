@@ -57,15 +57,16 @@ class IoSocket {
       try {
         SocketMsg message = Util.convertObjectTo(arguments);
         callback(message);
-        _notificationService.showLocalNotification(
-          CustomNotification(
-            id: 10,
-            title: "Está na mesa pessoal...",
-            body: "",
-            payload: "",
-          ),
-        );
-        print(message.kdsMessageType);
+        if(message.kdsList?[0].status == 2) {
+          _notificationService.showLocalNotification(
+            CustomNotification(
+              id: 10,
+              title: "Está na mesa pessoal...",
+              body: "Pedido Pronto!",
+              payload: "",
+            ),
+          );
+        }
       } catch (error) {
         print(error);
       }
