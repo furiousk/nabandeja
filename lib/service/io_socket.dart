@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
-import '../model/custom_notification.dart';
 import 'notification_service.dart';
 
 class IoSocket {
@@ -20,6 +21,8 @@ class IoSocket {
   final NotificationService _notificationService;
 
   IoSocket(this._notificationService);
+
+  T? cast<T>(x) => x is T ? x : null;
 
   Future<void> _initialize() async {
     Logger.root.level = Level.ALL;
@@ -49,15 +52,13 @@ class IoSocket {
     await _callInvoke(companyId);
 
     hubConnection.on("ReceiveUpdateOrderStatusKdsAsync", (arguments) {
-      print(arguments);
-      _notificationService.showLocalNotification(
-        CustomNotification(
-          id: 10,
-          title: "Está na mesa pessoal...",
-          body: "",
-          payload: "",
-        ),
-      );
+      try {
+        var data = json.decode(json.encode(arguments?[2]));
+
+        print(data['kdsList']);
+      } catch (error) {
+        print(error);
+      }
     });
   }
 }
@@ -97,4 +98,15 @@ void main(List<String> arguments) async {
   });
 
   Logger.root.log(Level.INFO, "Result: '$result");
+
+
+
+        _notificationService.showLocalNotification(
+        CustomNotification(
+          id: 10,
+          title: "Está na mesa pessoal...",
+          body: "",
+          payload: "",
+        ),
+      );
 }*/

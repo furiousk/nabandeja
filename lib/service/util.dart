@@ -1,3 +1,5 @@
+import '../model/socket_msg.dart';
+
 class Util {
   static String createInitials(String inputString) {
     List<String> wordList = inputString.split(" ");
@@ -12,5 +14,13 @@ class Util {
     } else {
       return ' ';
     }
+  }
+
+  static SocketMsg convertObjectTo(Map<dynamic, dynamic> object) {
+    SocketMsg newObject = SocketMsg(
+      kdsMessageType: object['kdsMessageType'],
+      kdsList: object['kdsList'],
+    );
+    return newObject;
   }
 }
