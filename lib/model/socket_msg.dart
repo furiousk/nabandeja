@@ -1,19 +1,19 @@
+import 'abstract_generic_model.dart';
 import 'kds.dart';
 
-class SocketMsg {
+class SocketMsg extends AbstractGenericModel {
   int? kdsMessageType;
   List<Kds>? kdsList;
 
-  SocketMsg({
-    this.kdsMessageType,
-    this.kdsList,
-  });
+  @override
+  SocketMsg.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+    var entriesList = json["kdsList"] as List;
 
-  factory SocketMsg.fromJson(Map<String, dynamic> json) => SocketMsg(
-        kdsMessageType: json["kdsMessageType"],
-        kdsList: (json["kdsList"] as List).map((e) => Kds.fromJson(e)).toList(),
-      );
+    kdsMessageType = json["kdsMessageType"];
+    kdsList = entriesList.map((e) => Kds.fromJson(e)).toList();
+  }
 
+  @override
   Map<String, dynamic> toJson() => {
         "kdsMessageType": kdsMessageType,
         "kdsList": kdsList,

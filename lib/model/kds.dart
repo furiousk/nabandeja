@@ -1,23 +1,21 @@
+import 'abstract_generic_model.dart';
 import 'entries.dart';
 
-class Kds {
+class Kds extends AbstractGenericModel {
   String? id;
-  String? status;
+  int? status;
   List<Entries>? entries;
 
-  Kds({
-    this.id,
-    this.status,
-    this.entries,
-  });
+  @override
+  Kds.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+    var entriesList = json["entries"] as List;
 
-  factory Kds.fromJson(Map<String, dynamic> json) => Kds(
-        id: json["id"],
-        status: json["status"],
-        entries:
-            (json["entries"] as List).map((e) => Entries.fromJson(e)).toList(),
-      );
+    id = json["id"];
+    status = json["status"];
+    entries = entriesList.map((e) => Entries.fromJson(e)).toList();
+  }
 
+  @override
   Map<String, dynamic> toJson() => {
         "id": id,
         "status": status,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nabandeja/assets/themes/app_colors.dart';
 import 'package:nabandeja/model/kds_order_status.dart';
+import 'package:provider/provider.dart';
+import '../../service/io_socket.dart';
+import '../../service/preferences_provider.dart';
 import 'card_build.dart';
 import 'text_company_name.dart';
 import './transform_btn.dart';
@@ -45,6 +48,8 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
       curve: Curves.easeInOut,
     ));
 
+    _callSocket();
+
     super.initState();
   }
 
@@ -67,6 +72,17 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
     setState(() {
       _translateButton.value;
     });
+  }
+
+  void _callSocket() async {
+    var companyId = await PreferencesProvider.getCompanyId();
+    Provider.of<IoSocket>(context, listen: false).onMessage(
+        companyId,
+        (message) => {
+              setState(() {
+                _filter;
+              }),
+            });
   }
 
   @override

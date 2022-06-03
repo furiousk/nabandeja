@@ -1,9 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
+import 'package:nabandeja/service/util.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
+import '../model/socket_msg.dart';
 import 'notification_service.dart';
 
 class IoSocket {
@@ -47,15 +47,16 @@ class IoSocket {
     Logger.root.log(Level.INFO, "Result: '$result");
   }
 
-  Future<void> onMessage(String companyId) async {
+  Future<void> onMessage(
+      String companyId, void Function(SocketMsg message) callback) async {
     await _initialize();
     await _callInvoke(companyId);
 
     hubConnection.on("ReceiveUpdateOrderStatusKdsAsync", (arguments) {
       try {
-        var data = json.decode(json.encode(arguments?[2]));
-
-        print(data['kdsList']);
+        SocketMsg message = Util.convertObjectTo(arguments);
+        callback(message);
+        print(message.kdsMessageType);
       } catch (error) {
         print(error);
       }

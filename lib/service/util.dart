@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../model/socket_msg.dart';
 
 class Util {
@@ -16,11 +18,10 @@ class Util {
     }
   }
 
-  static SocketMsg convertObjectTo(Map<dynamic, dynamic> object) {
-    SocketMsg newObject = SocketMsg(
-      kdsMessageType: object['kdsMessageType'],
-      kdsList: object['kdsList'],
-    );
-    return newObject;
+  static SocketMsg convertObjectTo(List<Object>? arguments) {
+    var argsString = arguments?[2] as String;
+    Map<String, dynamic> data = jsonDecode(argsString.trim());
+    SocketMsg message = SocketMsg.fromJson(data);
+    return message;
   }
 }

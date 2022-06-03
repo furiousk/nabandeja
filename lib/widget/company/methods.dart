@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nabandeja/service/io_socket.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/company.dart';
@@ -26,7 +24,6 @@ class Methods {
     var companyAuth = await _api.authCompany(id);
 
     if (companyAuth.authenticated == true) {
-      Provider.of<IoSocket>(context, listen: false).onMessage(id);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const OrderApp()),
