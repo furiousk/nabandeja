@@ -1,3 +1,4 @@
+import 'package:nabandeja/model/kds_order.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/kds_groups.dart';
@@ -25,5 +26,9 @@ class Methods {
   Future<String> getCompanyName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('companyName').toString();
+  }
+
+  updateOrderStatus(KdsOrder kdsOrder) async {
+    _api.updateOrderStatus(kdsOrder);
   }
 }

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:nabandeja/assets/themes/app_colors.dart';
+import 'package:nabandeja/model/kds_order.dart';
+import 'package:nabandeja/model/kds_order_status.dart';
 import '../../model/kds_sales_order.dart';
 import './methods.dart';
 
@@ -48,7 +50,12 @@ class CardWidget extends StatelessWidget {
               itemCount: snapshot.data?.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
-                return buildCard(snapshot.data![index], context);
+                return buildCard(
+                  snapshot.data![index],
+                  context,
+                  status,
+                  _methods
+                );
               },
             );
           } else {
@@ -58,8 +65,10 @@ class CardWidget extends StatelessWidget {
   }
 }
 
-GestureDetector buildCard(KdsSalesOrder order, BuildContext context) {
+GestureDetector buildCard(KdsSalesOrder order, BuildContext context, int status, Methods _methods) {
 
+  final accountId = order.accountId ?? '';
+  final kdsSalesOrderId = order.kdsSalesOrderId ?? '';
   final salesOrderDate = order.salesOrderDate ?? '';
   final timeElapsed = DateTime.now().difference(DateTime.parse(salesOrderDate));
   final timeTrackingNormal = order.timeTrackingNormal ?? '';
@@ -90,8 +99,6 @@ GestureDetector buildCard(KdsSalesOrder order, BuildContext context) {
     }
   }
 
-  print(order.toJson());
-  
   return GestureDetector(
     onTap: () {},
     child: Card(
@@ -159,16 +166,65 @@ GestureDetector buildCard(KdsSalesOrder order, BuildContext context) {
               ),
               color: AppColors.lightGrey,
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                launchCode,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: AppColors.secondary,
-                  fontSize: 16,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 70,
+                  padding: const EdgeInsets.all(8.0),
+                  child: status != KdsOrderStatus.Queued ? 
+                    ElevatedButton(
+                      onPressed: () async {
+                        await _methods.updateOrderStatus(
+                          KdsOrder(
+                            id: kdsSalesOrderId, 
+                            accountId: accountId, 
+                            isSalesOrder: true, 
+                            status: status - 1,
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: AppColors.secondary,
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_rounded,
+                        color: Colors.white,
+                      ),
+                    ) : 
+                    const Text(''),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    launchCode,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: AppColors.secondary,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 70,
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await _methods.updateOrderStatus(
+                          KdsOrder(
+                            id: kdsSalesOrderId, 
+                            accountId: accountId, 
+                            isSalesOrder: true, 
+                            status: status + 1,
+                          ),
+                        );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: AppColors.secondary,
+                    ),
+                    child: const Icon(Icons.arrow_forward_rounded),
+                )),
+              ],
             ),
           ),
         ],

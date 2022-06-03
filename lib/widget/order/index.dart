@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nabandeja/assets/themes/app_colors.dart';
+import 'package:nabandeja/model/kds_order_status.dart';
 import 'card_build.dart';
 import 'text_company_name.dart';
 import './transform_btn.dart';
@@ -183,17 +184,17 @@ class _Order extends State<OrderApp> with SingleTickerProviderStateMixin {
                 children: <Widget>[
                   CardWidget(
                     context,
-                    status: 0,
+                    status: KdsOrderStatus.Queued,
                     filter: _filter,
                   ),
                   CardWidget(
                     context,
-                    status: 1,
+                    status: KdsOrderStatus.InPreparation,
                     filter: _filter,
                   ),
                   CardWidget(
                     context,
-                    status: 2,
+                    status: KdsOrderStatus.Ready,
                     filter: _filter,
                   ),
                   //const Icon(Icons.room_service),
