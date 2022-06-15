@@ -49,7 +49,7 @@ class IoSocket {
   }
 
   Future<void> onMessage(
-      String companyId, void Function(SocketMsg message) callback) async {
+      String companyId, void Function(Object message) callback) async {
     await _initialize();
     await _callInvoke(companyId);
 
@@ -71,53 +71,21 @@ class IoSocket {
         print(error);
       }
     });
+
+    hubConnection.on("ReceiveAddOrderKdsAsync", (arguments) {
+      try {
+        callback({});
+      } catch (error) {
+        print(error);
+      }
+    });
+
+    hubConnection.on("ReceiveCancelOrderKdsAsync", (arguments) {
+      try {
+        callback({});
+      } catch (error) {
+        print(error);
+      }
+    });
   }
 }
-/*
-void main(List<String> arguments) async {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((LogRecord rec) {
-    print('${rec.level.name}: ${rec.time}: ${rec.message}');
-  });
-
-  final hubProtLogger = Logger("SignalR - hub");
-  final transportProtLogger = Logger("SignalR - transport");
-  final httpOptions = HttpConnectionOptions(
-    logger: transportProtLogger,
-    skipNegotiation: true,
-    transport: HttpTransportType.WebSockets,
-  );
-
-  final hubConnection = HubConnectionBuilder()
-      .withUrl(
-        "https://stg.thexpos.net/signalrserver/poskds",
-        options: httpOptions,
-      )
-      .configureLogging(hubProtLogger)
-      .build();
-
-  await hubConnection.start();
-
-  final result = await hubConnection.invoke("AddToGroupAsync", args: <Object>[
-    "KDS_ff31e5b7-25b1-4849-865f-8546f21b20a5",
-  ]).catchError((err) {
-    print(err);
-  });
-
-  hubConnection.on("ReceiveUpdateOrderStatusKdsAsync", (arguments) {
-    print(arguments);
-  });
-
-  Logger.root.log(Level.INFO, "Result: '$result");
-
-
-
-        _notificationService.showLocalNotification(
-        CustomNotification(
-          id: 10,
-          title: "Está na mesa pessoal...",
-          body: "",
-          payload: "",
-        ),
-      );
-}*/
